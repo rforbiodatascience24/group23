@@ -8,4 +8,10 @@ editor: visual
 
 ## Gioele
 
+```{r}
+x <- 5
+y <- 7
+z <- y - x
+```
+
 ## Gaia
