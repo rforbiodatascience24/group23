@@ -12,6 +12,15 @@ First colab
 library(tidyverse)
 x <- 2
 print(x*2)
+
+```
+
+#### New feature
+
+im adding a new feature that can print hello world wow
+
+```{r}
+print("hello world")
 ```
 
 ## Gioele
@@ -20,6 +29,15 @@ print(x*2)
 x <- 5
 y <- 7
 z <- y - x
+
+```
+
+#### New feature
+
+abcdefghijklmnopqrstuvwxjz
+
+```{r}
+xz <- 7
 ```
 
 ## Gaia
@@ -29,4 +47,10 @@ Hello, World!
 ```{r}
 # code chunk 
 print("Hello, World!")
+```
+
+#### New feature
+
+```{r}
+print("I'm not very creative idk")
 ```
