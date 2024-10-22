@@ -30,3 +30,9 @@ Hello, World!
 # code chunk 
 print("Hello, World!")
 ```
+
+New feature
+
+```{r}
+print("I'm not very creative idk")
+```
