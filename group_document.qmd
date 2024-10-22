@@ -20,6 +20,15 @@ print(x*2)
 x <- 5
 y <- 7
 z <- y - x
+
+```
+
+#### New feature
+
+abcdefghijklmnopqrstuvwxjz
+
+```{r}
+xz <- 7
 ```
 
 ## Gaia
