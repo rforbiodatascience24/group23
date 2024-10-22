@@ -9,3 +9,10 @@ editor: visual
 ## Gioele
 
 ## Gaia
+
+Hello, World!
+
+```{r}
+# code chunk 
+print("Hello, World!")
+```
