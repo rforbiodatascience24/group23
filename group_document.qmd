@@ -12,6 +12,15 @@ First colab
 library(tidyverse)
 x <- 2
 print(x*2)
+
+```
+
+#### New feature
+
+im adding a new feature that can print hello world wow
+
+```{r}
+print("hello world")
 ```
 
 ## Gioele
