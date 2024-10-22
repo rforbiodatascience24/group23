@@ -6,6 +6,14 @@ editor: visual
 
 ## Natalia
 
+First colab
+
+```{r}
+library(tidyverse)
+x <- 2
+print(x*2)
+```
+
 ## Gioele
 
 ## Gaia
