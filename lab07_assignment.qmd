@@ -6,6 +6,8 @@ format:
 editor: visual
 ---
 
+Group 23:
+
 Gaia Marraffa s242160
 
 Natalia Najuch s243057
@@ -13,3 +15,15 @@ Natalia Najuch s243057
 Gioele Tiraboschi s242150
 
 ### Load libraries
+
+```{r}
+#| message: false
+library(tidyverse)
+library(broom)
+```
+
+### Load data
+
+```{r}
+gravier_aug <- read_tsv("data/03_gravier_clean_aug.tsv.gz")
+```
