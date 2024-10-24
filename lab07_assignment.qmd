@@ -67,23 +67,27 @@ p1 / p2 +
 ```
 
 ```{r}
-mean_points <- gravier_aug |>
-  group_by(early_metastasis) |>
-  summarise(
-    mean_g7F07 = mean(g7F07, na.rm = TRUE),
-    mean_g1A01 = mean(g1A01, na.rm = TRUE)
-  )
+gravier_aug_long <- pivot_longer(gravier_aug,
+                                       cols = starts_with("g"),
+                                       names_to = "gene",
+                                       values_to = "log2_expr_level")
 
+gravier_aug_long <- gravier_aug_long |>
+  mutate(early_metastasis = factor(early_metastasis))
 ```
 
 ```{r}
-gravier_aug |>
-  ggplot(aes(x = g7F07,
-             y = g1A01,
+gravier_aug_long |>
+  group_by(gene) |>
+  filter(str_starts(gene, "g1A"))
+```
+
+```{r}
+gravier_aug_long |>
+  group_by(gene) |>
+  filter(str_starts(gene, "g1A")) |>
+  ggplot(aes(x = gene,
+             y = log2_expr_level,
              color = early_metastasis)) +
-  geom_point() +
-  geom_point(data = mean_points,
-             aes(x = mean_g7F07,
-                 y = mean_g1A01),
-             size = 4, shape = 3, color = early_metastasis)
+  geom_boxplot()
 ```
