@@ -20,10 +20,70 @@ Gioele Tiraboschi s242150
 #| message: false
 library(tidyverse)
 library(broom)
+library(patchwork)
 ```
 
 ### Load data
 
 ```{r}
-gravier_aug <- read_tsv("data/03_gravier_clean_aug.tsv.gz")
+#gravier_aug <- read_tsv("data/03_gravier_clean_aug.tsv.gz")
+```
+
+```{r}
+#gravier_aug <- read_tsv("home/projects/r_for_bio_data_science/data/03_gravier_clean_aug.tsv.gz")
+
+```
+
+```{r}
+#| message: false
+gravier_aug <- read_tsv("03_gravier_clean_aug.tsv.gz")
+```
+
+```{r}
+gravier_aug <- gravier_aug |>
+  mutate(early_metastasis = factor(early_metastasis))
+
+#gravier_aug
+```
+
+```{r}
+p1 <- gravier_aug |>
+  ggplot(aes(x = g7F07,
+             fill = early_metastasis)) +  
+  geom_histogram(position = "dodge", binwidth = 0.03) +
+  labs(title = "Histogram of g7F07",
+       y = "N")
+
+p2 <- gravier_aug |>
+  ggplot(aes(x = g1A01,
+             fill = early_metastasis)) +  
+  geom_histogram(position = "dodge", binwidth = 0.03) +
+  labs(title = "Histogram of g1A01",
+       y = "N")
+
+p1 / p2 +
+  plot_layout(guides = "collect")
+
+```
+
+```{r}
+mean_points <- gravier_aug |>
+  group_by(early_metastasis) |>
+  summarise(
+    mean_g7F07 = mean(g7F07, na.rm = TRUE),
+    mean_g1A01 = mean(g1A01, na.rm = TRUE)
+  )
+
+```
+
+```{r}
+gravier_aug |>
+  ggplot(aes(x = g7F07,
+             y = g1A01,
+             color = early_metastasis)) +
+  geom_point() +
+  geom_point(data = mean_points,
+             aes(x = mean_g7F07,
+                 y = mean_g1A01),
+             size = 4, shape = 3, color = early_metastasis)
 ```
