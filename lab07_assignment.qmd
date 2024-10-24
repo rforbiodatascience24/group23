@@ -44,17 +44,10 @@ gravier_aug_long <- gravier_aug_long |>
 ```
 
 ```{r}
-# Grouping by gene and selecting only the ones starting with "g1A"
-gravier_aug_long |>
-  group_by(gene) |>
-  filter(str_starts(gene, "g1A"))
-```
-
-```{r}
 # Visualizing data with a boxplot
 gravier_aug_long |>
-  group_by(gene) |>
-  filter(str_starts(gene, "g1A")) |>
+  group_by(gene) |> # Grouping by gene and selecting only the ones starting with "g1A"
+  filter(str_starts(gene, "g1A")) |> 
   ggplot(aes(x = gene,
              y = log2_expr_level,
              color = early_metastasis)) +
