@@ -20,12 +20,76 @@ Gioele Tiraboschi s242150
 #| message: false
 library(tidyverse)
 library(broom)
+library(patchwork)
 ```
 
 ### Load data
 
 ```{r}
-gravier_aug <- read_tsv("data/03_gravier_clean_aug.tsv.gz")
+#gravier_aug <- read_tsv("data/03_gravier_clean_aug.tsv.gz")
+```
+
+```{r}
+#gravier_aug <- read_tsv("home/projects/r_for_bio_data_science/data/03_gravier_clean_aug.tsv.gz")
+
+```
+
+```{r}
+#| message: false
+gravier_aug <- read_tsv("03_gravier_clean_aug.tsv.gz")
+```
+
+```{r}
+gravier_aug <- gravier_aug |>
+  mutate(early_metastasis = factor(early_metastasis))
+
+#gravier_aug
+```
+
+```{r}
+p1 <- gravier_aug |>
+  ggplot(aes(x = g7F07,
+             fill = early_metastasis)) +  
+  geom_histogram(position = "dodge", binwidth = 0.03) +
+  labs(title = "Histogram of g7F07",
+       y = "N")
+
+p2 <- gravier_aug |>
+  ggplot(aes(x = g1A01,
+             fill = early_metastasis)) +  
+  geom_histogram(position = "dodge", binwidth = 0.03) +
+  labs(title = "Histogram of g1A01",
+       y = "N")
+
+p1 / p2 +
+  plot_layout(guides = "collect")
+
+```
+
+```{r}
+gravier_aug_long <- pivot_longer(gravier_aug,
+                                       cols = starts_with("g"),
+                                       names_to = "gene",
+                                       values_to = "log2_expr_level")
+
+gravier_aug_long <- gravier_aug_long |>
+  mutate(early_metastasis = factor(early_metastasis))
+```
+
+```{r}
+gravier_aug_long |>
+  group_by(gene) |>
+  filter(str_starts(gene, "g1A"))
+```
+
+```{r}
+gravier_aug_long |>
+  group_by(gene) |>
+  filter(str_starts(gene, "g1A")) |>
+  ggplot(aes(x = gene,
+             y = log2_expr_level,
+             color = early_metastasis)) +
+  geom_boxplot()
 ```
 
 test
