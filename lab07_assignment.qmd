@@ -20,76 +20,55 @@ Gioele Tiraboschi s242150
 #| message: false
 library(tidyverse)
 library(broom)
-library(patchwork)
 ```
 
 ### Load data
-
-```{r}
-#gravier_aug <- read_tsv("data/03_gravier_clean_aug.tsv.gz")
-```
-
-```{r}
-#gravier_aug <- read_tsv("home/projects/r_for_bio_data_science/data/03_gravier_clean_aug.tsv.gz")
-
-```
 
 ```{r}
 #| message: false
 gravier_aug <- read_tsv("03_gravier_clean_aug.tsv.gz")
 ```
 
-```{r}
-gravier_aug <- gravier_aug |>
-  mutate(early_metastasis = factor(early_metastasis))
-
-#gravier_aug
-```
+### Analysis
 
 ```{r}
-p1 <- gravier_aug |>
-  ggplot(aes(x = g7F07,
-             fill = early_metastasis)) +  
-  geom_histogram(position = "dodge", binwidth = 0.03) +
-  labs(title = "Histogram of g7F07",
-       y = "N")
-
-p2 <- gravier_aug |>
-  ggplot(aes(x = g1A01,
-             fill = early_metastasis)) +  
-  geom_histogram(position = "dodge", binwidth = 0.03) +
-  labs(title = "Histogram of g1A01",
-       y = "N")
-
-p1 / p2 +
-  plot_layout(guides = "collect")
-
-```
-
-```{r}
+# Lengthening data based on gene expression levels (in base 2 logarithm)
 gravier_aug_long <- pivot_longer(gravier_aug,
                                        cols = starts_with("g"),
                                        names_to = "gene",
                                        values_to = "log2_expr_level")
 
+# Adding a binary column indicating presence (1) or absence (0) of early metastatis
 gravier_aug_long <- gravier_aug_long |>
   mutate(early_metastasis = factor(early_metastasis))
 ```
 
 ```{r}
+# Grouping by gene and selecting only the ones starting with "g1A"
 gravier_aug_long |>
   group_by(gene) |>
   filter(str_starts(gene, "g1A"))
 ```
 
 ```{r}
+# Visualizing data with a boxplot
 gravier_aug_long |>
   group_by(gene) |>
   filter(str_starts(gene, "g1A")) |>
   ggplot(aes(x = gene,
              y = log2_expr_level,
              color = early_metastasis)) +
-  geom_boxplot()
+  geom_boxplot() +
+  labs(title = "Gene expression levels",
+       subtitle = "Stratified by early metastasis presence (1) or absence (0)",
+       x = "Gene",
+       y = "Expression level (log2 transformed)") +
+  theme(legend.position = "bottom",  
+    legend.direction = "horizontal")
 ```
 
-test
+Thanks to the boxplot above, we can visualize the distribution of expression levels for a selected group of genes. In particular, we may notice that most of the boxplots are quite similar with respect to the presence or absence of early metastasis.
+
+Some of them (e.g., g1A01, g1A02, g1A05, g1A07) are characterized by slightly larger boxplots for the metastasis group, which suggests these genes could be differentially expressed between the two groups, though not in a very significant way.
+
+We also notice that g1A04 and g1A11 show the greatest variation in expression levels for both groups, as the corresponding boxplots are larger, and their whiskers are longer than those of the other genes. However, this difference does not appear to be highly significant either.
